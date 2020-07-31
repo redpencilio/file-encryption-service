@@ -3,7 +3,7 @@
 
 # Convenience logging function.
 info()    {
-    now=`date +%Y%m%dT%H%M%S`
+    now=$(date +%Y%m%dT%H%M%S)
     echo "[INFO] $now:  $@";
 }
 
@@ -17,8 +17,8 @@ encrypt_files() {
                  if (( ( ($curTime - $fileTime) / 60 ) > $ENCRYPT_AFTER_MINUTES ))
                  then
                      info "encrypting $file"
-                     gpg --encrypt --recipient $ENCRYPT_RECIPIENT --trust-model always $file
-                     rm $file
+                     gpg --encrypt -o "$ENCRYPTED_DIR/$(basename "$file").gpg" --recipient "$ENCRYPT_RECIPIENT" --trust-model always "$file"
+                     rm "$file"
                  fi
              fi
         done
@@ -27,7 +27,7 @@ encrypt_files() {
 
 info "importing GPG keys"
 for x in /keys/*;do
-    gpg --import $x;
+    gpg --import "$x";
 done
 
 if [ -z $ENCRYPT_RECIPIENT ]; then
@@ -42,10 +42,7 @@ else
     while true
     do
         encrypt_files
-        sleep $ENCRYPT_INTERVAL
+        sleep "$ENCRYPT_INTERVAL"
     done
 fi
-
-
-
 
