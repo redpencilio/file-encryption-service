@@ -11,15 +11,20 @@ Configuration is done via environment variables
 
 ## usage
 
-# one off load
-`docker run --rm -v $PWD/keys:/keys -v /your/folder/to/encrypt:/data/ -e ENCRYPT_INTERVAL='' -e ENCRYPT_GLOB='/data/*' -e ENCRYPT_AFTER_HOURS='1' -e ENCRYPT_RECIPIENT='info@redpencil.io' lblod/file-encryption-service`
+### one off load
+`docker run --rm -v $PWD/keys:/keys -v /your/folder/to/encrypt:/data/ -e ENCRYPT_INTERVAL='' -e ENCRYPT_GLOB='/data/*' -e ENCRYPT_AFTER_HOURS='1' -e ENCRYPT_RECIPIENT='info@redpencil.io' redpencil/file-encryption-service`
 
-## rotating GPG key
+### rotating GPG key
 If at some point you wish to replace the gpg key (because it was revoked or will expire soon), add the new (public) key tot the keys directory and remove the old key from the gpg store using ```docker exec -it [container-name] gpg --delete-key [key-id]```.
 
 You can retrieve the key using ```docker exec -it [container-name] gpg --list-keys```.
 
-## general GPG information
+### general GPG information
+You can run this container interactively to run the following commands. To do so, just run the following command to get a shell inside the container
+```
+docker run -it -v $PWD/keys:/keys redpencil/file-encryption-service /bin/bash
+```
+
 * generate a key: `gpg --gen-key`
 * export a public key: `gpg --output gpgkey.gpg --armor --export [key-id]`
 * export a private key: `gpg --export-secret-keys [key-id] > file.asc`
