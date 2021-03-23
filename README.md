@@ -24,6 +24,7 @@ You can run this container interactively to run the following commands. To do so
 ```
 docker run -it -v $PWD/keys:/keys redpencil/file-encryption-service /bin/bash
 ```
+*tip*: if you lack entropy for generating a key, you can run `rngd -r /dev/urandom` on the host machine to provide some.
 
 * generate a key: `gpg --gen-key`
 * export a public key: `gpg --output gpgkey.gpg --armor --export [key-id]`
