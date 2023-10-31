@@ -17,8 +17,7 @@ encrypt_files() {
                  if (( ( ($curTime - $fileTime) / 60 ) > $ENCRYPT_AFTER_MINUTES ))
                  then
                      info "encrypting $file"
-                     gpg --encrypt -o "$ENCRYPTED_DIR/$(basename "$file").gpg" --recipient "$ENCRYPT_RECIPIENT" --trust-model always "$file"
-                     rm "$file"
+                     gpg --encrypt -o "$ENCRYPTED_DIR/$(basename "$file").gpg" --recipient "$ENCRYPT_RECIPIENT" --trust-model always "$file" && rm "$file"
                  fi
              fi
         done
